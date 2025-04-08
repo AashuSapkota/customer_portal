@@ -1,0 +1,732 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/login":
+    post:
+      summary: User login
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '200':
+          description: successful login
+        '401':
+          description: account locked
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@example.com
+                password:
+                  type: string
+                  example: password123
+              required:
+              - email
+              - password
+  "/api/v1/signup":
+    post:
+      summary: User signup
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '201':
+          description: user created (existing organization)
+        '404':
+          description: organization not found
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                existing_customer:
+                  type: boolean
+                tax_id:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                password:
+                  type: string
+                password_confirmation:
+                  type: string
+                name:
+                  type: string
+                address:
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                zip_code:
+                  type: string
+                country:
+                  type: string
+              required:
+              - email
+              - password
+              - password_confirmation
+              - first_name
+              - last_name
+  "/api/v1/branches":
+    get:
+      summary: List branches
+      tags:
+      - Branches
+      security:
+      - auth: []
+      responses:
+        '200':
+          description: branches found
+    post:
+      summary: Create a branch
+      tags:
+      - Branches
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '201':
+          description: branch created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                address:
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                zip_code:
+                  type: string
+                country:
+                  type: string
+              required:
+              - name
+              - address
+  "/api/v1/branches/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Show a branch
+      tags:
+      - Branches
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: branch found
+        '404':
+          description: branch not found
+    put:
+      summary: Update a branch
+      tags:
+      - Branches
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '200':
+          description: branch updated
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                address:
+                  type: string
+    delete:
+      summary: Delete a branch
+      tags:
+      - Branches
+      security:
+      - Bearer: []
+      responses:
+        '204':
+          description: branch deleted
+  "/api/v1/contracts":
+    get:
+      summary: List contracts
+      tags:
+      - Contracts
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: contracts found
+    post:
+      summary: Create a contract
+      tags:
+      - Contracts
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '201':
+          description: contract created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vendor_id:
+                  type: integer
+                start_date:
+                  type: string
+                  format: date
+                end_date:
+                  type: string
+                  format: date
+                terms:
+                  type: string
+              required:
+              - vendor_id
+              - start_date
+  "/api/v1/contracts/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Show a contract
+      tags:
+      - Contracts
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: contract found
+        '404':
+          description: contract not found
+    put:
+      summary: Update a contract
+      tags:
+      - Contracts
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '200':
+          description: contract updated
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vendor_id:
+                  type: integer
+                start_date:
+                  type: string
+                  format: date
+                end_date:
+                  type: string
+                  format: date
+                terms:
+                  type: string
+    delete:
+      summary: Delete a contract
+      tags:
+      - Contracts
+      security:
+      - Bearer: []
+      responses:
+        '204':
+          description: contract deleted
+  "/api/v1/contracts/{id}/sign":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Sign a contract
+      tags:
+      - Contracts
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '200':
+          description: contract signed
+        '422':
+          description: invalid signature
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                signed_by:
+                  type: string
+                signature:
+                  type: string
+              required:
+              - signed_by
+              - signature
+  "/api/v1/delivery_orders":
+    get:
+      summary: List delivery orders
+      tags:
+      - Delivery Orders
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: delivery orders found
+    post:
+      summary: Create a delivery order
+      tags:
+      - Delivery Orders
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '201':
+          description: delivery order created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                branch_id:
+                  type: integer
+                vendor_id:
+                  type: integer
+                delivery_date:
+                  type: string
+                  format: date
+                status:
+                  type: string
+                delivery_instructions:
+                  type: string
+                order_items_attributes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      product_id:
+                        type: integer
+                      quantity:
+                        type: number
+                      price_per_unit:
+                        type: number
+                      unit:
+                        type: string
+                      notes:
+                        type: string
+                    required:
+                    - product_id
+                    - quantity
+              required:
+              - branch_id
+              - vendor_id
+              - delivery_date
+  "/api/v1/delivery_orders/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Show a delivery order
+      tags:
+      - Delivery Orders
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: delivery order found
+        '404':
+          description: delivery order not found
+    put:
+      summary: Update a delivery order
+      tags:
+      - Delivery Orders
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '200':
+          description: delivery order updated
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                delivery_instructions:
+                  type: string
+                order_items_attributes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      product_id:
+                        type: integer
+                      quantity:
+                        type: number
+                      _destroy:
+                        type: boolean
+    delete:
+      summary: Delete a delivery order
+      tags:
+      - Delivery Orders
+      security:
+      - Bearer: []
+      responses:
+        '204':
+          description: delivery order deleted
+  "/api/v1/delivery_orders/{id}/add_document":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Add document to delivery order
+      tags:
+      - Delivery Orders
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '201':
+          description: document added
+        '422':
+          description: invalid document
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: file
+        required: true
+  "/api/v1/delivery_orders/{id}/add_chat_message":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Add chat message to delivery order
+      tags:
+      - Delivery Orders
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '201':
+          description: chat message added
+        '422':
+          description: invalid message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+              required:
+              - message
+  "/api/v1/delivery_orders/export":
+    get:
+      summary: Export delivery orders
+      tags:
+      - Delivery Orders
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: export generated
+  "/api/v1/feature_flags":
+    get:
+      summary: List feature flags
+      tags:
+      - Feature Flags
+      security:
+      - Bearer: []
+      parameters:
+      - name: flaggable_type
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: flaggable_id
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: feature flags found (flaggable level)
+    post:
+      summary: Create a feature flag
+      tags:
+      - Feature Flags
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '201':
+          description: feature flag created (flaggable level)
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                enabled:
+                  type: boolean
+                flaggable_type:
+                  type: string
+                flaggable_id:
+                  type: integer
+              required:
+              - name
+              - enabled
+  "/api/v1/feature_flags/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Show a feature flag
+      tags:
+      - Feature Flags
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: feature flag found
+        '404':
+          description: feature flag not found
+    put:
+      summary: Update a feature flag
+      tags:
+      - Feature Flags
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '200':
+          description: feature flag updated
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                enabled:
+                  type: boolean
+    delete:
+      summary: Delete a feature flag
+      tags:
+      - Feature Flags
+      security:
+      - Bearer: []
+      responses:
+        '204':
+          description: feature flag deleted
+  "/api/v1/products":
+    get:
+      summary: List products
+      tags:
+      - Products
+      responses:
+        '200':
+          description: products found
+  "/api/v1/third_party_integrations":
+    get:
+      summary: List integrations
+      tags:
+      - Third Party Integrations
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: integrations found
+  "/api/v1/vendors":
+    get:
+      summary: List vendors
+      tags:
+      - Vendors
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: vendors found
+    post:
+      summary: Create a vendor
+      tags:
+      - Vendors
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '201':
+          description: vendor created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                contact_email:
+                  type: string
+                contact_phone:
+                  type: string
+                address:
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                zip_code:
+                  type: string
+                country:
+                  type: string
+              required:
+              - name
+  "/api/v1/vendors/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Show a vendor
+      tags:
+      - Vendors
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: vendor found
+        '404':
+          description: vendor not found
+    put:
+      summary: Update a vendor
+      tags:
+      - Vendors
+      security:
+      - Bearer: []
+      parameters: []
+      responses:
+        '200':
+          description: vendor updated
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                contact_email:
+                  type: string
+    delete:
+      summary: Delete a vendor
+      tags:
+      - Vendors
+      security:
+      - Bearer: []
+      responses:
+        '204':
+          description: vendor deleted
+  "/api/v1/vendors/{id}/set_preferred":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Set vendor as preferred
+      tags:
+      - Vendors
+      security:
+      - Bearer: []
+      responses:
+        '200':
+          description: vendor set as preferred
+components:
+  securitySchemes:
+    auth:
+      type: http
+      scheme: bearer
+security:
+- auth: []
+servers:
+- url: http://127.0.0.1:3000
+  variables:
+    defaultHost:
+      default: www.example.com

@@ -1,0 +1,74 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+
+
+/* Card improvements */
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 1.5rem;
+  }
+  
+  .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  }
+  
+  /* Table improvements */
+  .table {
+    margin-bottom: 0;
+  }
+  
+  .table th {
+    border-top: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+  }
+  
+  /* Badge improvements */
+  .badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+  }
+  
+  /* Form improvements */
+  .form-control, .form-select {
+    padding: 0.5rem 0.75rem;
+  }
+  
+  /* Navbar active state */
+  .navbar-nav .nav-item.active .nav-link {
+    font-weight: 500;
+  }
+  
+  /* Spacing utilities */
+  .mb-6 {
+    margin-bottom: 4rem !important;
+  }
+  
+  /* Custom colors */
+  .bg-light-gray {
+    background-color: #f8f9fa;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 767.98px) {
+    .card-body {
+      padding: 1rem;
+    }
+    
+    .table-responsive {
+      border: none;
+    }
+  }
